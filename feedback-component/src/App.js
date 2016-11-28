@@ -9,6 +9,12 @@ const questions = [{
   text:"How would you rate Y?",
   categories:['g','h','i','j','k','l']
 }]
+const ratingResponses = [
+  "Oh no! What can we do better?",
+  "That's too bad, how can we improve?",
+  "What can we do better?",
+  "That's great! What do you think we did well?",
+  "Excellent! What impressed you the most?" ]
 
 class App extends Component {
   render() {
@@ -17,9 +23,11 @@ class App extends Component {
           <Feedback 
             description={'description of quiz'} 
             title={'Test quiz'}
-            questions={questions}
+            questions={ questions }
+            ratingResponses={ ratingResponses }
+            inputPrompt={"Type more plz"}
             completeMessage={'Thanks for answering!'}
-            submitAnswers={(answers) => {console.log(answers)}}
+            handleAnswerSubmit={(answers) => {console.log(answers)}}
           />
       </div>
     );

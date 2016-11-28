@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import './Feedback.css';
 
+//TODO: customize text, animations, add to portal (w/ documentation)
+
 class Feedback extends Component {
     constructor() {
         super();
@@ -20,7 +22,7 @@ class Feedback extends Component {
         this.handleTextInput = this.handleTextInput.bind(this);
     }
     handleClick(e){
-        console.log(e.target.value)
+        // console.log(e.target.value)
         this.setState({ rating:parseInt(e.target.value, 10), starClicked:true })
     }
     handleCheck(e){
@@ -46,7 +48,10 @@ class Feedback extends Component {
             text:textbox
         }
         answers.push(answer);
+        //If last question
         if(questionIndex === this.props.questions.length - 1){
+            //DO SOMETHING WITH COMPLETED QUIZ HERE?
+            this.props.handleAnswerSubmit(answers);
             this.setState({
                 completed:true,
                 answers,
@@ -56,8 +61,6 @@ class Feedback extends Component {
                 textbox:""
             })
         } else {
-            //DO SOMETHING WITH COMPLETED QUIZ HERE?
-            this.props.submitAnswers(answers);
             this.setState({
                 answers,
                 questionIndex:questionIndex + 1,
@@ -69,7 +72,19 @@ class Feedback extends Component {
         }
     }
     render() {
-        const { title="Default Title", description, questions, completeMessage = "Thanks for answering our questions!" } = this.props;
+        const { title="Default Title", 
+            description, 
+            questions, 
+            completeMessage = "Thanks for answering our questions!",
+            ratingResponses = [
+                "What could we do better?",
+                "What could we do better?",
+                "What could we do better?",
+                "That's great! What did we do well?",
+                "That's great! What did we do well?"
+            ],
+            inputPrompt = "Can you expand on what you've selected?"
+        } = this.props;
         const { questionIndex, rating, starClicked, selected, textbox, completed } = this.state;
         console.log(starClicked)
         return (
@@ -81,15 +96,13 @@ class Feedback extends Component {
                     <div>
                     <h3>Question #{questionIndex + 1}</h3>
                     <p>{questions[questionIndex].text}</p>
-                    
                     <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} />
-                    {starClicked && (
+                    { starClicked && (
                         <form onSubmit={this.submitQuestion}>
-                            { rating >= 4 && <p>That's great! What did we do well?</p>}
-                            { rating <= 3 && <p>What could we do better?</p>}
+                            <p>{ ratingResponses[rating-1] }</p>
                             { questions[questionIndex].categories.map((category, index) => {
                                 return (
-                                <div key={index}>
+                                <div key={ index }>
                                     <input id={`category${index}`} onChange={this.handleCheck} type="checkbox" value={category} />
                                     <label htmlFor={`category${index}`}>{category}</label>
                                 </div>
@@ -97,12 +110,11 @@ class Feedback extends Component {
                             })}
                             { selected.length > 0 && (
                                 <div>
-                                    <p>Can you expand on what you've selected?</p>
+                                    <p>{inputPrompt}</p>
                                     <textarea className="feedback--textbox" onChange={this.handleTextInput} value={textbox}></textarea>
                                 </div>
                             )}
-                            {/*<button type="submit" className="feedback--submit">Next Question</button>*/}
-                            <RaisedButton type="submit" label="Next Question" labelColor={'#1e49ba'} />
+                            <button type="submit" className="feedback--submit">Next Question</button>
                         </form>
                     )}
                     </div>
@@ -117,8 +129,10 @@ Feedback.propTypes = {
     title: PropTypes.string,
 	description: PropTypes.string,
 	questions: PropTypes.array.isRequired,
-	submitAnswers: PropTypes.func.isRequired,
-	completeMessage: PropTypes.string,
+	handleAnswerSubmit: PropTypes.func.isRequired,
+    ratingResponses:PropTypes.array,
+    inputPrompt:PropTypes.string,
+	completeMessage: PropTypes.string
 }
 
 class Stars extends Component {
