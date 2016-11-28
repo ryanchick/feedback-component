@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import './Feedback.css';
 
 //TODO: customize text, animations, add to portal (w/ documentation)
@@ -72,19 +72,7 @@ class Feedback extends Component {
         }
     }
     render() {
-        const { title="Default Title", 
-            description, 
-            questions, 
-            completeMessage = "Thanks for answering our questions!",
-            ratingResponses = [
-                "What could we do better?",
-                "What could we do better?",
-                "What could we do better?",
-                "That's great! What did we do well?",
-                "That's great! What did we do well?"
-            ],
-            inputPrompt = "Can you expand on what you've selected?"
-        } = this.props;
+        const { title, description, questions, completeMessage, ratingResponses, inputPrompt } = this.props;
         const { questionIndex, rating, starClicked, selected, textbox, completed } = this.state;
         console.log(starClicked)
         return (
@@ -92,34 +80,53 @@ class Feedback extends Component {
                 <h1>{title}</h1>
                 <p>{description}</p>
                 <p>{starClicked}</p>
+                <ReactCSSTransitionGroup transitionName="example"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={300}>
                 { !completed && (
+                    
                     <div>
-                    <h3>Question #{questionIndex + 1}</h3>
-                    <p>{questions[questionIndex].text}</p>
-                    <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} />
-                    { starClicked && (
-                        <form onSubmit={this.submitQuestion}>
-                            <p>{ ratingResponses[rating-1] }</p>
-                            { questions[questionIndex].categories.map((category, index) => {
-                                return (
-                                <div key={ index }>
-                                    <input id={`category${index}`} onChange={this.handleCheck} type="checkbox" value={category} />
-                                    <label htmlFor={`category${index}`}>{category}</label>
+                    { questions
+                        .filter((question,index) => index === questionIndex)
+                        .map((question, index) => {
+                            return (
+                                <div key={'question'+index}>
+                                <h3>Question #{questionIndex + 1}</h3>
+                                <p>{question.text}</p>
+                                <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} />
+                                { starClicked && (
+                                    <form onSubmit={this.submitQuestion}>
+                                        <p>{ ratingResponses[rating-1] }</p>
+                                        { question.categories.map((category, index) => {
+                                            return (
+                                            <div key={ index }>
+                                                <input id={`category${index}`} onChange={this.handleCheck} type="checkbox" value={category} />
+                                                <label htmlFor={`category${index}`}>{category}</label>
+                                            </div>
+                                            )
+                                        })}
+                                        { selected.length > 0 && (
+                                            <div>
+                                                <p>{inputPrompt}</p>
+                                                <textarea className="feedback--textbox" onChange={this.handleTextInput} value={textbox}></textarea>
+                                            </div>
+                                        )}
+                                        <button type="submit" className="feedback--submit">Next Question</button>
+                                    </form>
+                                )}
                                 </div>
-                                )
-                            })}
-                            { selected.length > 0 && (
-                                <div>
-                                    <p>{inputPrompt}</p>
-                                    <textarea className="feedback--textbox" onChange={this.handleTextInput} value={textbox}></textarea>
-                                </div>
-                            )}
-                            <button type="submit" className="feedback--submit">Next Question</button>
-                        </form>
-                    )}
+                            )
+                        })
+                    
+                    }
+                    
                     </div>
+                    
                 )}
+                
                 { completed && <h3>{completeMessage}</h3> }
+                </ReactCSSTransitionGroup>
+                
             </div>
         )
     }
@@ -133,6 +140,19 @@ Feedback.propTypes = {
     ratingResponses:PropTypes.array,
     inputPrompt:PropTypes.string,
 	completeMessage: PropTypes.string
+}
+
+Feedback.defaultProps = {
+    title:"Default Title", 
+    completeMessage:"Thanks for answering our questions!",
+    ratingResponses:[
+        "What could we do better?",
+        "What could we do better?",
+        "What could we do better?",
+        "That's great! What did we do well?",
+        "That's great! What did we do well?"
+    ],
+    inputPrompt:"Can you expand on what you've selected?"
 }
 
 class Stars extends Component {
