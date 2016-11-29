@@ -73,6 +73,7 @@ class Feedback extends Component {
     }
     render() {
         const { title, description, questions, completeMessage, ratingResponses, inputPrompt } = this.props;
+        const { transitionName, transitionEnterTimeout, transitionLeaveTimeout } = this.props;
         const { questionIndex, rating, starClicked, selected, textbox, completed } = this.state;
         console.log(starClicked)
         return (
@@ -80,17 +81,14 @@ class Feedback extends Component {
                 <h1>{title}</h1>
                 <p>{description}</p>
                 <p>{starClicked}</p>
-                <ReactCSSTransitionGroup transitionName="example"
-                        transitionEnterTimeout={500}
-                        transitionLeaveTimeout={300}>
-                { !completed && (
-                    
-                    <div>
-                    { questions
-                        .filter((question,index) => index === questionIndex)
-                        .map((question, index) => {
-                            return (
-                                <div key={'question'+index}>
+                <ReactCSSTransitionGroup transitionName={transitionName}
+                    transitionEnterTimeout={transitionEnterTimeout}
+                    transitionLeaveTimeout={transitionLeaveTimeout}>
+                { questions
+                    .filter((question,index) => index === questionIndex && completed === false)
+                    .map((question, index) => {
+                        return (
+                            <div key={question.text}>
                                 <h3>Question #{questionIndex + 1}</h3>
                                 <p>{question.text}</p>
                                 <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} />
@@ -114,18 +112,13 @@ class Feedback extends Component {
                                         <button type="submit" className="feedback--submit">Next Question</button>
                                     </form>
                                 )}
-                                </div>
-                            )
-                        })
-                    
-                    }
-                    
-                    </div>
-                    
-                )}
-                
-                { completed && <h3>{completeMessage}</h3> }
+                            </div>
+                        )
+                    })
+                }
                 </ReactCSSTransitionGroup>
+                { completed && <h3>{completeMessage}</h3> }
+                
                 
             </div>
         )
@@ -139,7 +132,10 @@ Feedback.propTypes = {
 	handleAnswerSubmit: PropTypes.func.isRequired,
     ratingResponses:PropTypes.array,
     inputPrompt:PropTypes.string,
-	completeMessage: PropTypes.string
+	completeMessage: PropTypes.string,
+    transitionName: PropTypes.string,
+    transitionEnterTimeout: PropTypes.number,
+    transitionLeaveTimeout: PropTypes.number
 }
 
 Feedback.defaultProps = {
@@ -152,7 +148,10 @@ Feedback.defaultProps = {
         "That's great! What did we do well?",
         "That's great! What did we do well?"
     ],
-    inputPrompt:"Can you expand on what you've selected?"
+    inputPrompt:"Can you expand on what you've selected?",
+    transitionName:"example",
+    transitionEnterTimeout:500,
+    transitionLeaveTimeout:200
 }
 
 class Stars extends Component {

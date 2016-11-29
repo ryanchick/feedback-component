@@ -8,6 +8,18 @@ const questions = [{
 },{
   text:"How would you rate Y?",
   categories:['g','h','i','j','k','l']
+},{
+  text:"How would you rate Z?",
+  categories:['a','b','c','d','e','f']
+},{
+  text:"How would you rate A?",
+  categories:['g','h','i','j','k','l']
+},{
+  text:"How would you rate B?",
+  categories:['a','b','c','d','e','f']
+},{
+  text:"How would you rate C?",
+  categories:['g','h','i','j','k','l']
 }]
 const ratingResponses = [
   "Oh no! What can we do better?",

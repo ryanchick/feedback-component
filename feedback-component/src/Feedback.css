@@ -82,20 +82,47 @@
     left:2px;
 }
 
-.example-enter {
-  opacity: 0.01;
+.question-enter {
+
 }
 
-.example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 1000ms ease-in;
+.questions-enter.question-enter-active {
+  animation-name: slideInTop;
+  animation-duration: 500ms;
 }
 
-.example-leave {
-  opacity: 1;
+.question-leave {
+
 }
 
-.example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 1000ms ease-in;
+.question-leave.question-leave-active {
+  animation-name: slideOutDown;
+  animation-duration: 200ms;
+}
+
+
+@keyframes slideInTop {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
 }
