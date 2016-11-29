@@ -16,13 +16,12 @@ class Feedback extends Component {
             textbox:"",
             completed:false
         }
-        this.submitQuestion = this.submitQuestion.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
         this.handleTextInput = this.handleTextInput.bind(this);
+        this.submitQuestion = this.submitQuestion.bind(this);
     }
     handleClick(e){
-        // console.log(e.target.value)
         this.setState({ rating:parseInt(e.target.value, 10), starClicked:true })
     }
     handleCheck(e){
@@ -50,8 +49,7 @@ class Feedback extends Component {
         answers.push(answer);
         //If last question
         if(questionIndex === this.props.questions.length - 1){
-            //DO SOMETHING WITH COMPLETED QUIZ HERE?
-            this.props.handleAnswerSubmit(answers);
+            this.props.handleAnswerSubmit(answers); //Call answer handler from props when complete
             this.setState({
                 completed:true,
                 answers,
@@ -75,7 +73,6 @@ class Feedback extends Component {
         const { title, description, questions, completeMessage, ratingResponses, inputPrompt } = this.props;
         const { transitionName, transitionEnterTimeout, transitionLeaveTimeout } = this.props;
         const { questionIndex, rating, starClicked, selected, textbox, completed } = this.state;
-        console.log(starClicked)
         return (
             <div className="feedback">
                 <h1>{title}</h1>
@@ -138,6 +135,7 @@ Feedback.propTypes = {
     transitionLeaveTimeout: PropTypes.number
 }
 
+
 Feedback.defaultProps = {
     title:"Default Title", 
     completeMessage:"Thanks for answering our questions!",
@@ -149,7 +147,7 @@ Feedback.defaultProps = {
         "That's great! What did we do well?"
     ],
     inputPrompt:"Can you expand on what you've selected?",
-    transitionName:"example",
+    transitionName:"question",
     transitionEnterTimeout:500,
     transitionLeaveTimeout:200
 }

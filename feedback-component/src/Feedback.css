@@ -86,7 +86,7 @@
 
 }
 
-.questions-enter.question-enter-active {
+.question-enter.question-enter-active {
   animation-name: slideInTop;
   animation-duration: 500ms;
 }
