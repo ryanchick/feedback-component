@@ -2,8 +2,9 @@
 
 ### JavaScript API
 * Questions should be provided as an array of question objects, each question has text String and categories Array.
-    Ex: 
-    ```javascript
+    Ex:
+    <br> 
+    ```
     [{
         text:"What is X?", 
         categories:["a","b","c"]
@@ -13,7 +14,8 @@
     }]
     ```
 * Answers will be returned as an array in the following format:
-    ```javascript
+    <br>
+    ```
     {
         question:String - text of original question,
         rating:Number - chosen rating, from 1 to 5,
