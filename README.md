@@ -1,28 +1,27 @@
 # Feedback
 
 ### JavaScript API
-* Questions should be provided as an array of question objects, each question has text String and categories Array.
-    Ex:
-    <br> 
-    ```
-    [{
-        text:"What is X?", 
-        categories:["a","b","c"]
-    },{
-        text:"What is Y?", 
-        categories:["d","e","f"]
-    }]
-    ```
+* Questions should be provided as an array of question objects, each question has text String and categories Array. Ex:
+<br> 
+```
+[{
+    text:"What is X?", 
+    categories:["a","b","c"]
+},{
+    text:"What is Y?", 
+    categories:["d","e","f"]
+}]
+```
 * Answers will be returned as an array in the following format:
-    <br>
-    ```
-    {
-        question:String - text of original question,
-        rating:Number - chosen rating, from 1 to 5,
-        selected:Array - array of categories selected by user,
-        text:String - Text that was entered by user when prompted
-    }
-    ```
+<br>
+```
+{
+    question:String - text of original question,
+    rating:Number - chosen rating, from 1 to 5,
+    selected:Array - array of categories selected by user,
+    text:String - Text that was entered by user when prompted
+}
+```
     
 
 #### Props
