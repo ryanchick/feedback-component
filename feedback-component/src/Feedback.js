@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import './Feedback.css';
 
-//TODO: customize text, animations, add to portal (w/ documentation)
-
 class Feedback extends Component {
     constructor() {
         super();
@@ -70,14 +68,13 @@ class Feedback extends Component {
         }
     }
     render() {
-        const { title, description, questions, completeMessage, ratingResponses, inputPrompt } = this.props;
+        const { title, description, questions, completeMessage, ratingResponses, inputPrompt, allowRatingChange } = this.props;
         const { transitionName, transitionEnterTimeout, transitionLeaveTimeout } = this.props;
         const { questionIndex, rating, starClicked, selected, textbox, completed } = this.state;
         return (
             <div className="feedback">
-                <h1>{title}</h1>
+                <h2>{title}</h2>
                 <p>{description}</p>
-                <p>{starClicked}</p>
                 <ReactCSSTransitionGroup transitionName={transitionName}
                     transitionEnterTimeout={transitionEnterTimeout}
                     transitionLeaveTimeout={transitionLeaveTimeout}>
@@ -85,16 +82,16 @@ class Feedback extends Component {
                     .filter((question,index) => index === questionIndex && completed === false)
                     .map((question, index) => {
                         return (
-                            <div key={question.text}>
-                                <h3>Question #{questionIndex + 1}</h3>
-                                <p>{question.text}</p>
-                                <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} />
+                            <div key={question.text} className="feedback_question">
+                                <h3 className="feedback__question__title">Question #{questionIndex + 1}</h3>
+                                <p className="feedback__question__text">{question.text}</p>
+                                <Stars rating={rating} clicked={starClicked} handleClick={this.handleClick} allowRatingChange={allowRatingChange} />
                                 { starClicked && (
                                     <form onSubmit={this.submitQuestion}>
                                         <p>{ ratingResponses[rating-1] }</p>
                                         { question.categories.map((category, index) => {
                                             return (
-                                            <div key={ index }>
+                                            <div key={ index } className="feedback__question__category">
                                                 <input id={`category${index}`} onChange={this.handleCheck} type="checkbox" value={category} />
                                                 <label htmlFor={`category${index}`}>{category}</label>
                                             </div>
@@ -103,10 +100,10 @@ class Feedback extends Component {
                                         { selected.length > 0 && (
                                             <div>
                                                 <p>{inputPrompt}</p>
-                                                <textarea className="feedback--textbox" onChange={this.handleTextInput} value={textbox}></textarea>
+                                                <textarea className="feedback__question__textbox" onChange={this.handleTextInput} value={textbox}></textarea>
                                             </div>
                                         )}
-                                        <button type="submit" className="feedback--submit">Next Question</button>
+                                        <button type="submit" className="feedback__questions__submit">Next Question</button>
                                     </form>
                                 )}
                             </div>
@@ -132,7 +129,8 @@ Feedback.propTypes = {
 	completeMessage: PropTypes.string,
     transitionName: PropTypes.string,
     transitionEnterTimeout: PropTypes.number,
-    transitionLeaveTimeout: PropTypes.number
+    transitionLeaveTimeout: PropTypes.number,
+    allowRatingChange:PropTypes.bool
 }
 
 
@@ -149,23 +147,29 @@ Feedback.defaultProps = {
     inputPrompt:"Can you expand on what you've selected?",
     transitionName:"question",
     transitionEnterTimeout:500,
-    transitionLeaveTimeout:200
+    transitionLeaveTimeout:200,
+    allowRatingChange:true
 }
 
 class Stars extends Component {
     render(){
-        const { rating = 0, clicked = false, handleClick } = this.props;
+        const { rating = 0, clicked = false, handleClick, allowRatingChange } = this.props;
+        const clickHandler = (e) => {
+            if(clicked === false || allowRatingChange === true){
+                handleClick(e);
+            }
+        }
         return (
-            <div className={clicked ? 'feedback--rating' : 'feedback--rating'}>
-                <input type="radio" id="star5" name="rating" value="5" onChange={handleClick} checked={rating === 5}/>
+            <div className={clicked && !allowRatingChange ? 'feedback__rating feedback__rated' : 'feedback__rating'}>
+                <input type="radio" id="star5" name="rating" value="5" onChange={clickHandler} checked={rating === 5}/>
                 <label htmlFor="star5">5 stars</label>
-                <input type="radio" id="star4" name="rating" value="4" onChange={handleClick} checked={rating === 4}/>
+                <input type="radio" id="star4" name="rating" value="4" onChange={clickHandler} checked={rating === 4}/>
                 <label htmlFor="star4">4 stars</label>
-                <input type="radio" id="star3" name="rating" value="3" onChange={handleClick} checked={rating === 3}/>
+                <input type="radio" id="star3" name="rating" value="3" onChange={clickHandler} checked={rating === 3}/>
                 <label htmlFor="star3">3 stars</label>
-                <input type="radio" id="star2" name="rating" value="2" onChange={handleClick} checked={rating === 2}/>
+                <input type="radio" id="star2" name="rating" value="2" onChange={clickHandler} checked={rating === 2}/>
                 <label htmlFor="star2">2 stars</label>
-                <input type="radio" id="star1" name="rating" value="1" onChange={handleClick} checked={rating === 1}/>
+                <input type="radio" id="star1" name="rating" value="1" onChange={clickHandler} checked={rating === 1}/>
                 <label htmlFor="star1">1 star</label>
             </div>
         )

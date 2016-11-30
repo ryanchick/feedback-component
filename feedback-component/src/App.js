@@ -40,6 +40,7 @@ class App extends Component {
             inputPrompt={"Type more plz"}
             completeMessage={'Thanks for answering!'}
             handleAnswerSubmit={(answers) => {console.log(answers)}}
+            allowRatingChange={false}
           />
       </div>
     );

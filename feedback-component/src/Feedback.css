@@ -1,7 +1,7 @@
 .feedback{
     margin:20px;
 }
-.feedback--rating {
+.feedback__rating {
     /*float:left;*/
     width:300px;
     overflow:auto;
@@ -10,14 +10,14 @@
     /*margin:0 auto;*/
 }
 
-.feedback--submit{
+.feedback__question__submit{
     font-size:16px;
     color:rgb(30, 73, 186);
     background-color:#EEE;
     /*border:1px solid rgb(30,73,186);*/
 }
 
-.feedback--textbox{
+.feedback__question__textbox{
     min-width:280px;
     min-height:70px;
 }
@@ -26,13 +26,13 @@
 /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
    follow these rules. Every browser that supports :checked also supports :not(), so
    it doesn’t make the test unnecessarily selective */
-.feedback--rating:not(:checked) > input {
+.feedback__rating:not(:checked) > input {
     position:absolute;
     top:-9999px;
     clip:rect(0,0,0,0);
 }
 
-.feedback--rating:not(:checked) > label {
+.feedback__rating:not(:checked) > label {
     float:right;
     width:1em;
     padding:0 .1em;
@@ -45,41 +45,40 @@
     /*text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);*/
 }
 
-.feedback--rating:not(:checked) > label:before {
+.feedback__rating:not(:checked) > label:before {
     content: '★ ';
 }
 
-.feedback--rating:not(.feedback--rated):not(:checked) > label:hover,
-.feedback--rating:not(.feedback--rated):not(:checked) > label:hover ~ label {
-    color: gold;
+.feedback__rating:not(.feedback__rated):not(:checked) > label:hover,
+.feedback__rating:not(.feedback__rated):not(:checked) > label:hover ~ label {
     color: #2B95FD;
     /*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
 }
 
 
-.feedback--rating > input:checked ~ label {
-    color: #f70;
+.feedback__rating > input:checked ~ label {
     color: rgb(30, 73, 186);
     /*text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);*/
 }
 
-
-
-
-.feedback--rating:not(.feedback--rated) > input:checked + label:hover,
-.feedback--rating:not(.feedback--rated) > input:checked + label:hover ~ label,
-.feedback--rating:not(.feedback--rated) > input:checked ~ label:hover,
-.feedback--rating:not(.feedback--rated) > input:checked ~ label:hover ~ label,
-.feedback--rating:not(.feedback--rated) > label:hover ~ input:checked ~ label {
-    color: #ea0;
+.feedback__rating:not(.feedback__rated) > input:checked + label:hover,
+.feedback__rating:not(.feedback__rated) > input:checked + label:hover ~ label,
+.feedback__rating:not(.feedback__rated) > input:checked ~ label:hover,
+.feedback__rating:not(.feedback__rated) > input:checked ~ label:hover ~ label,
+.feedback__rating:not(.feedback__rated) > label:hover ~ input:checked ~ label {
     color:blue;
     /*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
 }
 
-.feedback--rating > label:active {
+.feedback__rating > label:active {
     position:relative;
     top:2px;
     left:2px;
+}
+
+.feedback__rated label:hover,
+.feedback__rated input:hover{
+    cursor:default;
 }
 
 .question-enter {
